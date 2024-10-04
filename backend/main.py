@@ -27,7 +27,18 @@ init_observability()
 environment = os.getenv("ENVIRONMENT", "dev")  # Default to 'development' if not set
 logger = logging.getLogger("uvicorn")
 
-if environment == "dev":
+if environment == "prod":
+    logger.info("Running in production mode.")    
+    allow_origins = [o.strip() for o in os.getenv("CORS_ORIGIN_WHITELIST", []).split(",")]
+    print(allow_origins*10)
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=allow_origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+else:
     logger.warning("Running in development mode - allowing CORS for all origins")
     app.add_middleware(
         CORSMiddleware,
@@ -36,12 +47,10 @@ if environment == "dev":
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
     # Redirect to documentation page when accessing base URL
     @app.get("/")
     async def redirect_to_docs():
         return RedirectResponse(url="/docs")
-
 
 def mount_static_files(directory, path):
     if os.path.exists(directory):
