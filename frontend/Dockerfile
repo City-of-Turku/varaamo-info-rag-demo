@@ -4,13 +4,22 @@ WORKDIR /app
 
 # Install dependencies
 COPY package.json package-lock.* ./
-RUN npm install
+RUN npm ci
 
 # Build the application
 COPY . .
 RUN npm run build
 
-# ====================================
-FROM build as release
+# Production stage
+FROM node:20-alpine AS release
 
-CMD ["npm", "run", "start"]
+WORKDIR /app
+
+# Install serve globally
+RUN npm install -g serve
+
+# Copy only the built assets from the build stage
+COPY --from=build /app/out ./out
+
+# Set the command to run serve
+CMD ["serve", "-s", "out", "-l", "3000"]
