@@ -10,6 +10,7 @@ services:
       - storage_data:/backend/storage
     environment:
       ENVIRONMENT: prod
+    restart: unless-stopped
   
   frontend:
     build:
@@ -17,6 +18,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    restart: unless-stopped
 
 volumes:
   chromadb_data:
