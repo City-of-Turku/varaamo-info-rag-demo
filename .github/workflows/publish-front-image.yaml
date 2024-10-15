@@ -7,9 +7,12 @@ on:
         description: 'Image tag'
         required: true
         default: 'latest'
+      NEXT_PUBLIC_CHAT_API:
+        description: 'Chat API URL'
+        required: true
 
 env:
-  IMAGE_NAME: frontend
+  IMAGE_NAME: varaamo-info-rag-demo-front
 
 jobs:
   publish:
@@ -45,3 +48,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            NEXT_PUBLIC_CHAT_API=${{ github.event.inputs.NEXT_PUBLIC_CHAT_API }}
