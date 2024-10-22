@@ -25,6 +25,10 @@ llama-index-llms-openai = "^0.2.0"
 llama-index-embeddings-openai = "^0.2.3"
 llama-index-agent-openai = "^0.3.0"
 llama-index-embeddings-azure-openai = "^0.2.5"
+torch = "^2.5.0"
+transformers = "^4.45.2"
+python-pptx = "^1.0.2"
+pillow = "^11.0.0"
 
 [tool.poetry.dependencies.uvicorn]
 extras = [ "standard" ]
